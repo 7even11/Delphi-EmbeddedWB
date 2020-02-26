@@ -1,6 +1,6 @@
 EmbeddedWB Component Pack
 ======================
-EWB is a freeware components package for Borland Delphi 5 to Seattle. 
+EWB is a freeware components package for Borland Delphi 5 to Rio. 
 It allow you to create a Web Browser, Chat Client, web updater, Html/Xml Editors and more.
 
 Orignally developed by: bsalsa productions
