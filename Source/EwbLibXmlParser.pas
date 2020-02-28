@@ -239,7 +239,7 @@ unit EwbLibXmlParser;
 interface
 
 uses
-  SysUtils, Classes,
+  SysUtils, Classes, {$ifdef DELPHIXE3_UP}AnsiStrings,{$endif}
   (*$IFDEF HAS_CONTNRS_UNIT *)// The Contnrs Unit was introduced in Delphi 5
   Contnrs,
   (*$ENDIF*)
@@ -830,11 +830,11 @@ var
   Len: INTEGER;
 begin
   First := AnsiChar(SearchStr^);
-  Len := StrLen(SearchStr);
+  Len := {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLen(SearchStr);
   Result := Str;
   repeat
     if AnsiChar(Result^) = First then
-      if StrLComp(Result, SearchStr, Len) = 0 then
+      if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Result, SearchStr, Len) = 0 then
         BREAK;
     if Result^ = #0 then
     begin
@@ -932,7 +932,7 @@ function StrScanE(const Source: PAnsiChar; const CharToScanFor: AnsiChar): PAnsi
 begin
   Result := StrScan(Source, CharToScanFor);
   if Result = nil then
-    Result := StrEnd(Source) - 1;
+    Result := {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrEnd(Source) - 1;
 end;
 
 procedure ExtractName(Start: PAnsiChar; Terminators: TCharset; var Final: PAnsiChar);
@@ -960,7 +960,7 @@ begin
   Final := StrScan(Start + 1, AnsiChar(Start^));
   if Final = nil then
   begin
-    Final := StrEnd(Start + 1) - 1;
+    Final := {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrEnd(Start + 1) - 1;
     SetString(Content, Start + 1, Final - Start);
   end
   else
@@ -1064,7 +1064,7 @@ constructor TExternalID.Create(Start: PAnsiChar);
 begin
   inherited Create;
   Final := Start;
-  if StrLComp(Start, 'SYSTEM', 6) = 0 then
+  if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Start, 'SYSTEM', 6) = 0 then
   begin
     while not (CharInSet(Final^, (CQuoteChar + [#0, '>', '[']))) do
       INC(Final);
@@ -1073,7 +1073,7 @@ begin
     ExtractQuote(Final, SystemID, Final);
   end
   else
-    if StrLComp(Start, 'PUBLIC', 6) = 0 then
+    if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Start, 'PUBLIC', 6) = 0 then
     begin
       while not (CharInSet(Final^, (CQuoteChar + [#0, '>', '[']))) do
         INC(Final);
@@ -1202,14 +1202,14 @@ function TXmlParser.LoadFromBuffer(Buffer: PAnsiChar): BOOLEAN;
 begin
   Result := FALSE;
   Clear;
-  FBufferSize := StrLen(Buffer) + 1;
+  FBufferSize := {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLen(Buffer) + 1;
   try
     GetMem(FBuffer, FBufferSize);
   except
     Clear;
     EXIT;
   end;
-  StrCopy(FBuffer, Buffer);
+  {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrCopy(FBuffer, Buffer);
   FSource := '<MEM>';
   Result := TRUE;
 end;
@@ -1263,30 +1263,30 @@ begin
     // --- No Document or End Of Document: Terminate Scan
     if (CurStart = nil) or (CurStart^ = #0) then
     begin
-      CurStart := StrEnd(DocBuffer);
+      CurStart := {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrEnd(DocBuffer);
       CurFinal := CurStart - 1;
       EntityStack.Clear;
       Result := FALSE;
       EXIT;
     end;
 
-    if (StrLComp(CurStart, '<?xml', 5) = 0) and
+    if ({$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(CurStart, '<?xml', 5) = 0) and
       (CharInSet((CurStart + 5)^, CWhitespace)) then
       AnalyzeProlog // XML Declaration, Text Declaration
     else
-      if StrLComp(CurStart, '<?', 2) = 0 then
+      if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(CurStart, '<?', 2) = 0 then
         AnalyzePI(CurStart, CurFinal) // PI
       else
-        if StrLComp(CurStart, '<!--', 4) = 0 then
+        if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(CurStart, '<!--', 4) = 0 then
           AnalyzeComment(CurStart, CurFinal) // Comment
         else
-          if StrLComp(CurStart, '<!DOCTYPE', 9) = 0 then
+          if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(CurStart, '<!DOCTYPE', 9) = 0 then
             AnalyzeDtdc // DTDc
           else
-            if StrLComp(CurStart, CDStart, Length(CDStart)) = 0 then
+            if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(CurStart, CDStart, Length(CDStart)) = 0 then
               AnalyzeCdata // CDATA Section
             else
-              if StrLComp(CurStart, '<', 1) = 0 then
+              if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(CurStart, '<', 1) = 0 then
                 AnalyzeTag // Start-Tag, End-Tag, Empty-Element-Tag
               else
                 AnalyzeText(IsDone); // Text Content
@@ -1311,7 +1311,7 @@ begin
     then
     INC(CurFinal)
   else
-    CurFinal := StrEnd(CurStart) - 1;
+    CurFinal := {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrEnd(CurStart) - 1;
   FCurEncoding := AnsiUpperCase(CurAttr.Value('encoding'));
   if FCurEncoding = '' then
     FCurEncoding := 'UTF-8'; // Default XML Encoding is UTF-8
@@ -1326,7 +1326,7 @@ begin
   Final := StrPos(Start + 4, '-->');
   if Final = nil
     then
-    Final := StrEnd(Start) - 1
+    Final := {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrEnd(Start) - 1
   else
     INC(Final, 2);
   CurPartType := ptComment;
@@ -1342,7 +1342,7 @@ begin
   Final := StrPos(Start + 2, '?>');
   if Final = nil
     then
-    Final := StrEnd(Start) - 1
+    Final := {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrEnd(Start) - 1
   else
     INC(Final);
   ExtractName(Start + 2, CWhitespace + ['?', '>'], F);
@@ -1423,8 +1423,8 @@ begin
               Phase := phDtd;
             end;
           phDtd:
-            if (StrLComp(CurFinal, 'SYSTEM', 6) = 0) or
-              (StrLComp(CurFinal, 'PUBLIC', 6) = 0) then
+            if ({$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(CurFinal, 'SYSTEM', 6) = 0) or
+               ({$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(CurFinal, 'PUBLIC', 6) = 0) then
             begin
               ExternalID := TExternalID.Create(CurFinal);
               ExternalDTD := LoadExternalEntity(ExternalId.SystemId, ExternalID.PublicId, '');
@@ -1491,19 +1491,19 @@ begin
       ']',
         '>': BREAK;
       '<':
-        if StrLComp(Final, '<!ELEMENT', 9) = 0 then
+        if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Final, '<!ELEMENT', 9) = 0 then
           AnalyzeElementDecl(Final, Final)
         else
-          if StrLComp(Final, '<!ATTLIST', 9) = 0 then
+          if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Final, '<!ATTLIST', 9) = 0 then
             AnalyzeAttListDecl(Final, Final)
           else
-            if StrLComp(Final, '<!ENTITY', 8) = 0 then
+            if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Final, '<!ENTITY', 8) = 0 then
               AnalyzeEntityDecl(Final, Final)
             else
-              if StrLComp(Final, '<!NOTATION', 10) = 0 then
+              if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Final, '<!NOTATION', 10) = 0 then
                 AnalyzeNotationDecl(Final, Final)
               else
-                if StrLComp(Final, '<?', 2) = 0 then
+                if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Final, '<?', 2) = 0 then
                 begin // PI in DTD
                   DER.ElementType := dePI;
                   DER.Start := Final;
@@ -1515,7 +1515,7 @@ begin
                   DtdElementFound(DER);
                 end
                 else
-                  if StrLComp(Final, '<!--', 4) = 0 then
+                  if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Final, '<!--', 4) = 0 then
                   begin // Comment in DTD
                     DER.ElementType := deComment;
                     DER.Start := Final;
@@ -1630,8 +1630,8 @@ begin
   CurFinal := StrPos(CurStart, CDEnd);
   if CurFinal = nil then
   begin
-    CurFinal := StrEnd(CurStart) - 1;
-    CurContent := TranslateEncoding(string(StrPas(CurStart + Length(CDStart))));
+    CurFinal := {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrEnd(CurStart) - 1;
+    CurContent := TranslateEncoding(string({$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrPas(CurStart + Length(CDStart))));
   end
   else
   begin
@@ -1830,7 +1830,7 @@ begin
       if F = nil then
       begin
         Element.Definition := string(Final);
-        Final := StrEnd(Final);
+        Final := {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrEnd(Final);
         BREAK;
       end
       else
@@ -1974,7 +1974,7 @@ begin
                 Phase := phDefault;
               end
               else
-                if StrLComp(Final, 'NOTATION', 8) = 0 then
+                if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Final, 'NOTATION', 8) = 0 then
                 begin
                   INC(Final, 8);
                   AttrDef.AttrType := atNotation;
@@ -2018,7 +2018,7 @@ begin
               else
               begin
                 AttrDef.Notations := string(Final + 1);
-                Final := StrEnd(Final);
+                Final := {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrEnd(Final);
               end;
               ReplaceParameterEntities(AttrDef.Notations);
               AttrDef.Notations := DelChars(AttrDef.Notations, CWhitespace);
@@ -2134,8 +2134,8 @@ begin
               Phase := phFinalGT;
             end
             else
-              if (StrLComp(Final, 'SYSTEM', 6) = 0) or
-                (StrLComp(Final, 'PUBLIC', 6) = 0) then
+              if ({$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Final, 'SYSTEM', 6) = 0) or
+                 ({$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Final, 'PUBLIC', 6) = 0) then
               begin
                 ExternalID := TExternalID.Create(Final);
                 EntityDef.SystemId := ExternalID.SystemId;
@@ -2145,7 +2145,7 @@ begin
                 ExternalID.Free;
               end;
           phNData:
-            if StrLComp(Final, 'NDATA', 5) = 0 then
+            if {$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrLComp(Final, 'NDATA', 5) = 0 then
             begin
               INC(Final, 4);
               Phase := phNotationName;
@@ -2390,7 +2390,7 @@ procedure TXmlParser.ReplaceGeneralEntities(var Str: string);
                   else
                   begin // External Entity
                     ExternalEntity := LoadExternalEntity(EntityDef.SystemId, EntityDef.PublicId, EntityDef.NotationName);
-                    Repl := string(StrPas(ExternalEntity.DocBuffer)); // !!! What if it contains a Text Declaration?
+                    Repl := string({$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}StrPas(ExternalEntity.DocBuffer)); // !!! What if it contains a Text Declaration?
                     ExternalEntity.Free;
                   end;
                   ReplaceEntities(Repl); // Recursion
