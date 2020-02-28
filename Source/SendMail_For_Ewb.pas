@@ -304,7 +304,7 @@ begin
       nFileCount := Attachments.Count;
 
 {$IFDEF UNICODE}
-      lpAttachArray := TlpAttachArray(AnsiStrAlloc(nFileCount *
+      lpAttachArray := TlpAttachArray({$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}AnsiStrAlloc(nFileCount *
         SizeOf(TMapiFileDesc)));
 {$ELSE}
       lpAttachArray := TlpAttachArray(StrAlloc(nFileCount *
@@ -343,7 +343,7 @@ begin
   if Assigned(Recipients) and (Recipients.Count > 0) then
   begin
 {$IFDEF UNICODE}
-    lpRecipArray := TlpRecipArray(AnsiStrAlloc(Recipients.Count *
+    lpRecipArray := TlpRecipArray({$ifdef DELPHIXE3_UP}AnsiStrings.{$endif}AnsiStrAlloc(Recipients.Count *
       SizeOf(TMapiRecipDesc)));
 {$ELSE}
     lpRecipArray := TlpRecipArray(StrAlloc(Recipients.Count *
