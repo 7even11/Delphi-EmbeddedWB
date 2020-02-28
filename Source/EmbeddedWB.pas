@@ -1,8 +1,8 @@
 //*************************************************************
 //                        TEmbeddedWB                         *
-//							      *
+//							                                              *
 //                     Freeware Component                     *
-//                       For Delphi 5 to Delphi XE            *
+//                       For Delphi 5 to Delphi Rio           *
 //                            by                              *
 //                     Per Lindso Larsen                      *
 //      Developing Team:                                      *
@@ -379,7 +379,7 @@ type
     ZoneManager: IInternetZoneManager;
     FResizable: Boolean;
     property Name: string read GetName write SetName;
-    property HWND: Integer read GetHWND;
+    property hWnd: Integer read GetHWND;
     property Parent: TWinControl read GetParent write SetParent;
     property Resizable: Boolean read FResizable write FResizable default True;
 {$IFDEF DELPHI12_UP}

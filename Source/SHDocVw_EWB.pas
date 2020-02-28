@@ -466,7 +466,7 @@ type
     function Get_FullScreen: WordBool; safecall;
     procedure Set_FullScreen(pbFullScreen: WordBool); safecall;
     property Name: WideString read Get_Name;
-    property HWND: Integer read Get_HWND;
+    property hWnd: Integer read Get_HWND;
     property FullName: WideString read Get_FullName;
     property Path: WideString read Get_Path;
     property Visible: WordBool read Get_Visible write Set_Visible;
@@ -489,7 +489,7 @@ type
     procedure PutProperty(const Property_: WideString; vtValue: OleVariant); dispid 302;
     function GetProperty(const Property_: WideString): OleVariant; dispid 303;
     property Name: WideString readonly dispid 0;
-    property HWND: Integer readonly dispid - 515;
+    property hWnd: Integer readonly dispid - 515;
     property FullName: WideString readonly dispid 400;
     property Path: WideString readonly dispid 401;
     property Visible: WordBool dispid 402;
@@ -591,7 +591,7 @@ type
     procedure PutProperty(const Property_: WideString; vtValue: OleVariant); dispid 302;
     function GetProperty(const Property_: WideString): OleVariant; dispid 303;
     property Name: WideString readonly dispid 0;
-    property HWND: Integer readonly dispid - 515;
+    property hWnd: Integer readonly dispid - 515;
     property FullName: WideString readonly dispid 400;
     property Path: WideString readonly dispid 401;
     property Visible: WordBool dispid 402;
@@ -1396,7 +1396,7 @@ type
     property LocationURL: WideString index 211 read GetWideStringProp;
     property Busy: WordBool index 212 read GetWordBoolProp;
     property Name: WideString index 0 read GetWideStringProp;
-    property HWND: Integer index - 515 read GetIntegerProp;
+    property hWnd: Integer index - 515 read GetIntegerProp;
     property FullName: WideString index 400 read GetWideStringProp;
     property Path: WideString index 401 read GetWideStringProp;
     property ReadyState: TOleEnum index - 525 read GetTOleEnumProp;
