@@ -1,19 +1,18 @@
-// *************************************************************
-// TEwbCore                          *
-// *
-// Freeware Component                     *
-// For Delphi                           *
-// For Delphi 5 to Delphi XE            *
-// *
-// Developing Team:                                      *
-// Eran Bodankin (bsalsa) -(bsalsa@gmail.com)        *
-// Serge Voloshenyuk (SergeV@bsalsa.com)             *
-// Thomas Stutz (smot777@yahoo.com                   *
-// *
-// Documentation and updated versions:                  *
-// *
-// http://www.bsalsa.com                        *
-// *************************************************************
+// *****************************************************************************
+// TEwbCore                                                                    *
+//                                                                             *
+// Freeware Component                                                          *
+// For Delphi 5 to Delphi Rio                                                  *
+//                                                                             *
+// Developing Team:                                                            *
+// Eran Bodankin (bsalsa) -(bsalsa@gmail.com)                                  *
+// Serge Voloshenyuk (SergeV@bsalsa.com)                                       *
+// Thomas Stutz (smot777@yahoo.com                                             *
+//                                                                             *
+// Documentation and updated versions:                                         *
+//                                                                             *
+// http://www.bsalsa.com                                                       *
+// *****************************************************************************
 { LICENSE:
   THIS SOFTWARE IS PROVIDED TO YOU "AS IS" WITHOUT WARRANTY OF ANY KIND,
   EITHER EXPRESSED OR IMPLIED INCLUDING BUT NOT LIMITED TO THE APPLIED
@@ -93,32 +92,43 @@ type
   TDownloadControlOptions = set of TDownloadControlOption;
 
   { Doc Host Flags:
-    http://msdn.microsoft.com/en-us/library/aa753277.aspx }
-  { TUserInterfaceOption = (DIALOG, DISABLE_HELP_MENU, NO3DBORDER,
-    SCROLL_NO, DISABLE_SCRIPT_INACTIVE, OPENNEWWIN, DISABLE_OFFSCREEN,
-    FLAT_SCROLLBAR, DIV_BLOCKDEFAULT, ACTIVATE_CLIENTHIT_ONLY,
-    OVERRIDEBEHAVIORFACTORY,
-    CODEPAGELINKEDFONTS, URL_ENCODING_DISABLE_UTF8,
-    URL_ENCODING_ENABLE_UTF8,
-    ENABLE_FORMS_AUTOCOMPLETE, ENABLE_INPLACE_NAVIGATION,
-    IME_ENABLE_RECONVERSION,
-    THEME, NOTHEME, NOPICS, NO3DOUTERBORDER, DISABLE_EDIT_NS_FIXUP,
-    LOCAL_MACHINE_ACCESS_CHECK, DISABLE_UNTRUSTEDPROTOCOL,
-    HOST_NAVIGATES, ENABLE_REDIRECT_NOTIFICATION, USE_WINDOWLESS_SELECTCONTROL,
-    USE_WINDOWED_SELECTCONTROL, ENABLE_ACTIVEX_INACTIVATE_MODE);
+    http://msdn.microsoft.com/en-us/library/aa753277.aspx
+    https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa753277(v=vs.85)
+
+    TUserInterfaceOption = (
+      DIALOG,                         DISABLE_HELP_MENU,
+      NO3DBORDER,                     SCROLL_NO,
+      DISABLE_SCRIPT_INACTIVE,        OPENNEWWIN,
+      DISABLE_OFFSCREEN,              FLAT_SCROLLBAR,
+      DIV_BLOCKDEFAULT,               ACTIVATE_CLIENTHIT_ONLY,
+      OVERRIDEBEHAVIORFACTORY,        CODEPAGELINKEDFONTS,
+      URL_ENCODING_DISABLE_UTF8,      URL_ENCODING_ENABLE_UTF8,
+      ENABLE_FORMS_AUTOCOMPLETE,      ENABLE_INPLACE_NAVIGATION,
+      IME_ENABLE_RECONVERSION,        THEME,
+      NOTHEME,                        NOPICS,
+      NO3DOUTERBORDER,                DISABLE_EDIT_NS_FIXUP,
+      LOCAL_MACHINE_ACCESS_CHECK,     DISABLE_UNTRUSTEDPROTOCOL,
+      HOST_NAVIGATES,                 ENABLE_REDIRECT_NOTIFICATION,
+      USE_WINDOWLESS_SELECTCONTROL,   USE_WINDOWED_SELECTCONTROL,
+      ENABLE_ACTIVEX_INACTIVATE_MODE, DPI_AWARE);
   }
-  TUserInterfaceOption = (DisableTextSelect, DisableHelpMenu, DontUse3DBorders,
-    DontUseScrollBars, PostponeScriptUntilActive, ForceOpenNewWindow,
-    Reserved_OFFSCREEN, ForceFlatScrollBars, InsertDivTagOnEditMode,
-    ActivateUIOnlyOnDocClick, ConsultBeforeRetrievingBehavior,
-    CheckFontSupportsCodePage, DisableSubmitUrlInUTF8, EnableSubmitUrlInUTF8,
-    EnablesFormsAutoComplete, ForceSameWindowNavigation,
-    EmableImeLocalLanguages, EnableThemes, DisableThemes, DisablePicsRatings,
-    DisableFrameSetBorder, DisablesAutoNameSpaceCorrection,
-    DisableLocalFileAccess, DisableUntrustedProtocol,
-    CheckNavigationDelegatedToHost, EnableRedirectNotification,
-    EnableDomWindlessControls, EnableWindowedControls,
-    ForceUserActivationOnActiveXJava);
+  TUserInterfaceOption = (
+      DisableTextSelect,                DisableHelpMenu,
+      DontUse3DBorders,                 DontUseScrollBars,
+      PostponeScriptUntilActive,        ForceOpenNewWindow,
+      Reserved_OFFSCREEN,               ForceFlatScrollBars,
+      InsertDivTagOnEditMode,           ActivateUIOnlyOnDocClick,
+      ConsultBeforeRetrievingBehavior,  CheckFontSupportsCodePage,
+      DisableSubmitUrlInUTF8,           EnableSubmitUrlInUTF8,
+      EnablesFormsAutoComplete,         ForceSameWindowNavigation,
+      EnableImeLocalLanguages,          EnableThemes,
+      DisableThemes,                    DisablePicsRatings,
+      DisableFrameSetBorder,            DisablesAutoNameSpaceCorrection,
+      DisableLocalFileAccess,           DisableUntrustedProtocol,
+      CheckNavigationDelegatedToHost,   EnableRedirectNotification,
+      EnableDomWindlessControls,        EnableWindowedControls,
+      ForceUserActivationOnActiveXJava, DpiAware);
+
   TUserInterfaceOptions = set of TUserInterfaceOption;
 
   { events }
@@ -1728,11 +1738,10 @@ end;
 procedure TCustomEmbeddedWB.UpdateUserInterfaceValues;
 const
   acardUserInterfaceValues: array [TUserInterfaceOption] of Cardinal =
-    ($00000001, $00000002, $00000004, $00000008, $00000010, $00000020,
-    $00000040, $00000080, $00000100, $00000200, $00000400, $00000800, $00001000,
-    $00002000, $00004000, $00010000, $00020000, $00040000, $00080000, $00100000,
-    $00200000, $00400000, $00800000, $01000000, $02000000, $04000000, $08000000,
-    $10000000, $20000000);
+    ($00000001, $00000002, $00000004, $00000008, $00000010, $00000020, $00000040, $00000080,
+     $00000100, $00000200, $00000400, $00000800, $00001000, $00002000, $00004000, $00010000,
+     $00020000, $00040000, $00080000, $00100000, $00200000, $00400000, $00800000, $01000000,
+     $02000000, $04000000, $08000000, $10000000, $20000000, $40000000);
 var
   uio: TUserInterfaceOption;
 begin
@@ -1746,9 +1755,9 @@ end;
 procedure TCustomEmbeddedWB.UpdateDownloadControlValues;
 const
   acardDownloadControlValues: array [TDownloadControlOption] of Cardinal =
-    ($00000010, $00000020, $00000040, $00000080, $00000100, $00000200,
-    $00000400, $00000800, $00001000, $00002000, $00004000, $00008000, $00010000,
-    $00020000, $00040000, $10000000, $20000000, $40000000, $80000000);
+    ($00000010, $00000020, $00000040, $00000080, $00000100, $00000200, $00000400, $00000800,
+     $00001000, $00002000, $00004000, $00008000, $00010000, $00020000, $00040000, $10000000,
+     $20000000, $40000000, $80000000);
 var
   dco: TDownloadControlOption;
 begin
